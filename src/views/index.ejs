@@ -1,0 +1,20 @@
+<%- include('includes/head') %>
+
+<body>
+  <section class="container">
+    <h1>
+      <%=umaVariavelLocal%>
+    </h1>
+    
+    <form action="/" method="post">
+      <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+      <labe>Cliente</label>
+      <input type="text" name="cliente">
+      <button>Enviar</button>
+    </form>
+  </section>
+
+  <script src="./assets/js/bundle.js"></script>
+</body>
+
+</html>
