@@ -1,38 +1,62 @@
 const Contato = require('../models/ContatoModel')
 exports.index = (req, res) => {
-    res.render('contatos')
+  res.render('contatos', { userContatos: {} })
 }
 
 
 exports.register = async (req, res) => {
 
-    try{
-        const contato = new Contato(req.body)
-        await contato.register()
+  try {
+    const contato = new Contato(req.body)
+    await contato.register()
 
-        if (contato.errors.length > 0) {
-            req.flash('errors', contato.errors);
-            req.session.save(() => res.redirect('index'))
-            return
-        };
+    if (contato.errors.length > 0) {
+      req.flash('errors', contato.errors);
+      req.session.save(() => res.redirect('index'))
+      return
+    };
 
-        req.flash('success', 'Contato Salvo co sucesso!');
-        res.redirect(`/contato/index/${contato.contato._id}`)
-    } catch(e){
-        console.log(e)
-        return res.render('404')
-    }
-    
+    req.flash('success', 'Contato Salvo co sucesso!');
+    res.redirect(`/contato/index/${contato.contato._id}`)
+  } catch (e) {
+    console.log(e)
+    return res.render('404')
+  }
+
 }
 
 
 exports.editIndex = async (req, res) => {
-    if(!req.params.id) return res.render('404')
-    const contato = new Contato()
+  if (!req.params.id) return res.render('404')
+  const contato = new Contato()
+
+  const userContatos = await contato.buscaId(req.params.id)
+  if (!userContatos) return res.render('404')
+
+  res.render('contatos', { userContatos })
+
+};
+
+exports.edit = async function(req, res) {
+  try {
+    if(!req.params.id) return res.render('404');
+    const contato = new Contato(req.body);
+    await contato.edit(req.params.id);
+
     
-    const user = await contato.buscaId(req.params.id)
-    if(!user) return res.render('404')
 
-    res.render('contatos', { user })
+    if(contato.errors.length > 0) {
+      req.flash('errors', contato.errors);
 
-}
+      req.session.save(() => res.redirect(`http://localhost:3333/contato/index/${req.params.id}`));
+      return;
+    }
+
+    req.flash('success', 'Contato editado com sucesso.');
+    req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));
+    return;
+  } catch(e) {
+    console.log(e);
+    res.render('404');
+  }
+};
