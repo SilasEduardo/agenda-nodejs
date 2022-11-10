@@ -1,31 +1,20 @@
 <%- include('includes/head') %>
-    <%- include('includes/nav') %>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-8 my-3">
-                    <h1 class=" text-center">Agenda</h1>
-                    <p class="text-center lead">Seu contatos estão abaixo</p>
 
-                    <%- include('includes/message')%>
+<body>
+  <section class="container">
+    <h1>
+      <%=umaVariavelLocal%>
+    </h1>
+    
+    <form action="/" method="post">
+      <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+      <labe>Cliente</label>
+      <input type="text" name="cliente">
+      <button>Enviar</button>
+    </form>
+  </section>
 
-                    <div class="responsive-table">
-                        <table class="table my-3">
-                            <% contatos.forEach(contato => { %>
-                            <tr>
-                              <td><%= contato.nome %></td>
-                              <td><%= contato.sobrenome %></td>
-                              <td><%= contato.telefone %></td>
-                              <td><%= contato.email %></td>
-                              <td><a href="/contato/index/<%= contato._id %>">Editar</a></td>
-                              <td><a class="text-danger" href="/contato/delete/<%= contato._id %>">Excluir</a></td>
-                            </tr>
-                            <% }); %>
-                          </table>
-                    </div>
-                </div>
-                <div class="col-lg-2"></div>
+  <script src="./assets/js/bundle.js"></script>
+</body>
 
-            </div>
-        </div>
-        <%- include('includes/footer') %>
+</html>

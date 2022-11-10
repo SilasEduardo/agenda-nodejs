@@ -6,13 +6,12 @@ const app = express();
 
 // MONGOOSE SALVAR DADOS MODELAR 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('BD CONNECTING')
     app.emit('pronto');
   })
   .catch(e => console.log(e));
-
 
 
 const session = require('express-session'); // SESSOES PARA SALVAR COOKS
