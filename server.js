@@ -1,7 +1,7 @@
 require('dotenv').config(); // variaves de ambiente; senha, email
 
 // Express
-import express from "express"
+const express = require('express');
 const app = express();
 
 // MONGOOSE SALVAR DADOS MODELAR 
@@ -11,7 +11,7 @@ mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifi
     console.log('BD CONNECTING')
     app.emit('pronto');
   })
-  .catch( (e: any) => console.log(e));
+  .catch(e => console.log(e));
 
 
 
@@ -20,11 +20,11 @@ const MongoStore = require('connect-mongo'); // SALVANDO NAS BASE DE DADOS
 const flash = require('connect-flash'); //MESSAGEM ALTO DESTRUTIVAS
 
 
-// const routes = require('./routes'); // ROTAS
+const routes = require('./routes'); // ROTAS
 const path = require('path'); //CAMINHOS
 const helmet = require('helmet'); //SEGURANÇA
 const csrf = require('csurf'); // TOKEN DE FORMULARIOS: SEGURANÇA
-// const { middlewareGlobal, checkCsrfError, csrfMiddleware  } = require('./src/middlewares/middleware'); // FUNÇÃO QUE SÃO EXECUDADAS NAS ROTAS
+const { middlewareGlobal, checkCsrfError, csrfMiddleware  } = require('./src/middlewares/middleware'); // FUNÇÃO QUE SÃO EXECUDADAS NAS ROTAS
 
 app.use(helmet());
 
@@ -55,10 +55,10 @@ app.set('view engine', 'ejs');
 app.use(csrf());
 
 // Nossos próprios middlewares
-// app.use(checkCsrfError);
-// app.use(middlewareGlobal);
-// app.use(csrfMiddleware)
-// app.use(routes);
+app.use(checkCsrfError);
+app.use(middlewareGlobal);
+app.use(csrfMiddleware)
+app.use(routes);
 
 
 
