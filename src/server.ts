@@ -1,30 +1,30 @@
-require('dotenv').config(); // variaves de ambiente; senha, email
-
+import * as dotenv from "dotenv";
+dotenv.config(); // variaves de ambiente; senha, email
+import express from "express"
 // Express
-const express = require('express');
 const app = express();
 
 // MONGOOSE SALVAR DADOS MODELAR 
-const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
+import mongoose from 'mongoose';
+mongoose.connect(process.env.CONNECTIONSTRING? { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('BD CONNECTING')
     app.emit('pronto');
   })
-  .catch(e => console.log(e));
+  .catch((e: any) => console.log(e));
 
 
 
-const session = require('express-session'); // SESSOES PARA SALVAR COOKS
-const MongoStore = require('connect-mongo'); // SALVANDO NAS BASE DE DADOS
-const flash = require('connect-flash'); //MESSAGEM ALTO DESTRUTIVAS
+import session from 'express-session'; // SESSOES PARA SALVAR COOKS
+import MongoStore from 'connect-mongo'; // SALVANDO NAS BASE DE DADOS
+import flash from 'connect-flash'; //MESSAGEM ALTO DESTRUTIVAS
 
 
-const routes = require('./routes'); // ROTAS
-const path = require('path'); //CAMINHOS
-const helmet = require('helmet'); //SEGURANÇA
-const csrf = require('csurf'); // TOKEN DE FORMULARIOS: SEGURANÇA
-const { middlewareGlobal, checkCsrfError, csrfMiddleware  } = require('./src/middlewares/middleware'); // FUNÇÃO QUE SÃO EXECUDADAS NAS ROTAS
+import routes from './routes'; // ROTAS
+import path from 'path'; //CAMINHOS
+import helmet from 'helmet'; //SEGURANÇA
+import csrf from 'csurf'; // TOKEN DE FORMULARIOS: SEGURANÇA
+import { middlewareGlobal, checkCsrfError, csrfMiddleware } from './src/middlewares/middleware'; // FUNÇÃO QUE SÃO EXECUDADAS NAS ROTAS
 
 app.use(helmet());
 
