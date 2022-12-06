@@ -8,9 +8,8 @@ exports.index = (req, res) => {
 
 exports.register = (req, res) => {
 
-  const { ...body } = req.body
+  const { ...body } = req.body;
+  const login = new Login(body);
 
-  const login = new Login(body)
-
-  res.send(body.email)
+  res.send(login.body)
 };
