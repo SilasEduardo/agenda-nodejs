@@ -1,4 +1,5 @@
 const validator = require("validator");
+const bcryptjs = require("bcryptjs");
 
 const mongoose = require("mongoose");
 
@@ -16,30 +17,54 @@ class Login {
     this.user = null;
   }
 
+  async login(){
+    this.valida();
+    if (this.errors.length > 0) return;
+    this.user = await LoginModel.findOne({email: this.body.email});
+    if(!this.user) {
+      this.errors.push('User already exists');
+      return;
+    }
+    if(!bcryptjs.compareSync(this.body.password, this.user.password)){
+    this.errors.push('invalid password');
+    this.user = null
+    return;
+    }
+
+  }
+
   async register() {
     this.valida();
     if (this.errors.length > 0) return;
 
-    try{
-        this.user  = await LoginModel.create(this.body);
-    } catch(e){
-        console.error(e);
-    };
-    
+    await this.userExists();
+
+    if (this.errors.length > 0) return;
+
+    const salt = bcryptjs.genSaltSync();
+    this.body.password = bcryptjs.hashSync(this.body.password, salt);
+    this.user = await LoginModel.create(this.body);
+
   };
 
-  valida() {
- 
+  async userExists(){
+    this.user = await LoginModel.findOne({email: this.body.email});
+    if(this.user) this.errors.push('User already exists');
+  }
 
+
+
+  valida() {
     //Validação
     // o e-mail precisa ser valido
 
-    if (!validator.isEmail(this.body.email)){
+    if (!validator.isEmail(this.body.email)) {
       this.errors.push("email is not valid");
     }
     // A senha precisa ter entre 3 e 50
 
-    if (this.body.password.length < 3 || this.body.password.length > 50)this.errors.push("passord must be between 3 and 50 charactes");
+    if (this.body.password.length < 3 || this.body.password.length > 50)
+      this.errors.push("passord must be between 3 and 50 charactes");
   }
 
   cleanUp() {
