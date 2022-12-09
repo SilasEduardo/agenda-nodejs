@@ -7,10 +7,14 @@
       <h1 class="text-center">Crie conta ou Entrar</h1>
       <p class="text-center lead">Faça login ou crie sua conta abaixo.</p>
 
+      <%- include('includes/messages'); %>
+
       <div class="row">
         <div class="col-lg">
           <h4>Faça seu cadastro </h4>
           <p>Se ainda não posue conta crie aqui.</p>
+
+          
 
           <form action="/login/register" method="POST">
             <input type="hidden" name="_csrf" value=<%= csrfToken %>>
