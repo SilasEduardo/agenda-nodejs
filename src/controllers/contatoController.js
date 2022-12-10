@@ -57,14 +57,14 @@ exports.edit = async (req, res) => {
   if (contato.errors.length > 0) {
     req.flash("errors", contato.errors);
     req.session.save(function () {
-      return res.redirect("index");
+      return res.redirect("conatato/index");
     });
 
     return;
   }
 
   
-  req.flash("success", "contact successfully savid");
+  req.flash("success", "contact successfully edit");
   req.session.save(function () {
     return res.redirect(`/contato/index/${contato.contato._id}`);
   });
