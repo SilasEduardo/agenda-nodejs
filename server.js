@@ -16,7 +16,7 @@ mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifi
 
 
 const session = require('express-session'); // SESSOES PARA SALVAR COOKS
-const MongoStore = require('connect-mongo'); // SALVANDO NAS BASE DE DADOS
+const MongoStore = require('connect-mongo'); // SALVANDO SESSOES
 const flash = require('connect-flash'); //MESSAGEM ALTO DESTRUTIVAS
 
 
