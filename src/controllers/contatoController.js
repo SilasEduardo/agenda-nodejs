@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
 
     req.flash("success", "contact successfully savid");
     req.session.save(function () {
-      return res.redirect(`/contato/index/${contato.contato._id}`);
+      return res.redirect("/");
     });
   } catch (e) {
     res.render("404");
@@ -57,16 +57,49 @@ exports.edit = async (req, res) => {
   if (contato.errors.length > 0) {
     req.flash("errors", contato.errors);
     req.session.save(function () {
-      return res.redirect("conatato/index");
+      return res.redirect("/contato/index");
     });
 
     return;
-  }
+  };
 
   
   req.flash("success", "contact successfully edit");
   req.session.save(function () {
     return res.redirect(`/contato/index/${contato.contato._id}`);
+  });
+
+  } catch(e) {
+    console.log('Error: ', e )
+  }
+  
+  
+};
+
+
+exports.delete = async (req, res) => {
+
+  try{
+
+  if (!req.params.id) return res.render("404");
+  const { ...body } = req.body;
+  const contato = new Contato(body);
+ 
+  await contato.delete(req.params.id);
+
+  if (contato.errors.length > 0) {
+    req.flash("errors", contato.errors);
+    req.session.save(function () {
+      return res.redirect("/");
+    });
+
+    return;
+  };
+
+  
+  req.flash("success", "contact successfully delete");
+  req.session.save(function () {
+    return res.redirect("/");
   });
 
   } catch(e) {

@@ -6,7 +6,7 @@ const app = express();
 
 // MONGOOSE SALVAR DADOS MODELAR 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true,  useUnifiedTopology: true })
   .then(() => {
     console.log('BD CONNECTING')
     app.emit('pronto');

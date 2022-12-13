@@ -7,6 +7,7 @@ const ContatoSchema = new mongoose.Schema({
   lastname: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String, required: true },
+  cridoEm: { type: Date, default: Date.now },
 });
 
 const ContatoModel = mongoose.model("Contato", ContatoSchema);
@@ -16,14 +17,10 @@ class Contato {
     this.body = body;
     this.errors = [];
     this.contato = null;
+    this.dateNow = Date.now()
   }
 
-  async buscaPorId(id) {
-    if (typeof id !== "string") return;
-    const user = await ContatoModel.findById(id);
-
-    return user;
-  }
+  
 
   async register() {
     this.valida();
@@ -51,6 +48,14 @@ class Contato {
     if (this.errors.length > 0) return;
     this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {new: true});
     
+  };
+
+
+  async delete(id) {
+    if (typeof id !== "string") return;
+    if (this.errors.length > 0) return;
+    this.contato = await ContatoModel.findByIdAndDelete(id);
+    
   }
 
   cleanUp() {
@@ -60,10 +65,29 @@ class Contato {
       }
     }
     this.body = {
+      name: this.body.name,
+      lastname: this.body.lestname,
       email: this.body.email,
-      password: this.body.password,
+      phone: this.body.phone,
+      criadoEm: new Date(this.dateNow)   
     };
   }
+
+  // metodod estaticos  
+  async buscaPorId(id) {
+    if (typeof id !== "string") return;
+    const user = await ContatoModel.findById(id);
+
+    return user;
+  }
+
+  async buscaContatos() {
+    const contatos = await ContatoModel.find().sort({ criadoEm: -1 });
+    return contatos;
+  }
 }
+
+
+
 
 module.exports = Contato;
